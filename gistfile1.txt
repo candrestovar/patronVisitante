@@ -1,0 +1,161 @@
+
+
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+ 
+public interface UsuarioVisitor {
+ 
+   void visit(Cliente cliente);
+   void visit(Operador operador);
+}
+ 
+public class UsuarioPrintVisitor implements UsuarioVisitor {
+ 
+   @Override
+   public void visit(Cliente cliente) {
+      System.out.println("Soy un cliente");
+   }
+ 
+   @Override
+   public void visit(Operador operador) {
+      System.out.println("Soy un operador");
+   }
+ 
+}
+ 
+public class UsuarioDescuentoVisitor implements UsuarioVisitor {
+ 
+   private float descuento;
+ 
+   @Override
+   public void visit(Cliente cliente) {
+      descuento = 10;
+   }
+ 
+   @Override
+   public void visit(Operador operador) {
+      descuento = 30;
+   }
+ 
+   public float getDescuento() {
+      return descuento;
+   }
+}
+ 
+public interface Usuario {
+ 
+   void accept(UsuarioVisitor visitor);
+}
+ 
+public class Cliente implements Usuario {
+ 
+   @Override
+   public void accept(UsuarioVisitor visitor) {
+      visitor.visit(this);
+   }
+ 
+}
+ 
+public class Operador implements Usuario {
+ 
+   @Override
+   public void accept(UsuarioVisitor visitor) {
+      visitor.visit(this);
+   }
+ 
+}
+ 
+
+Como en el siguiente Main ya no necesitamos usar condicionales:
+
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+ 
+public class Main {
+ 
+   public static void main(String[] args) {
+ 
+      Usuario c = new Cliente();
+      //Supongamos que nuestro programa recibe un Usuario x.
+      //Para cualquier usuario ya no necesitamos condicionales.
+      UsuarioVisitor vPrint = new UsuarioPrintVisitor();
+      UsuarioDescuentoVisitor vDes = new UsuarioDescuentoVisitor();
+      c.accept(vPrint);
+      c.accept(vDes);
+      System.out.println(vDes.getDescuento());
+   }
+ 
+}
+ 
